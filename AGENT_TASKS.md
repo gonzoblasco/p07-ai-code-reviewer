@@ -2,9 +2,9 @@
 
 ## Estado general
 
-- Fase actual: 1 — Setup
-- Última task completada: T03
-- Próxima task: T04
+- Fase actual: 4 — Cierre
+- Última task completada: T14
+- Próxima task: —
 
 ## Contexto del proyecto
 
@@ -54,7 +54,7 @@ Sin Supabase — no hay persistencia en este proyecto.
 - Recibe el diff del PR
 - Lanza los 3 subagents en paralelo via `Promise.all`
 - Consolida resultados en un único string markdown
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T05 — Subagent: security-audit
 
@@ -62,7 +62,7 @@ Sin Supabase — no hay persistencia en este proyecto.
 - System prompt: rol de security reviewer — detecta inyecciones, secrets hardcodeados, inputs sin sanitizar, deps vulnerables
 - Input: diff completo del PR
 - Output: lista de issues con severidad (critical / warning / info) o "✅ Sin issues"
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T06 — Subagent: test-coverage
 
@@ -70,7 +70,7 @@ Sin Supabase — no hay persistencia en este proyecto.
 - System prompt: rol de QA reviewer — evalúa si los cambios tienen tests, detecta casos edge no cubiertos
 - Input: diff completo del PR
 - Output: evaluación de cobertura + casos sugeridos o "✅ Cobertura adecuada"
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T07 — Subagent: conventions
 
@@ -78,7 +78,7 @@ Sin Supabase — no hay persistencia en este proyecto.
 - System prompt: rol de code reviewer — verifica naming, estructura de archivos, imports, patrones del proyecto
 - Input: diff completo del PR
 - Output: lista de desviaciones o "✅ Convenciones respetadas"
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ---
 
@@ -89,7 +89,7 @@ Sin Supabase — no hay persistencia en este proyecto.
 - En el webhook handler, llamar `getPRDiff` → `orchestrator` → `postComment`
 - Formato del comentario: secciones separadas por subagent con emojis de estado
 - Agregar header fijo: `## 🤖 AI Code Review`
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T09 — Dashboard mínimo (opcional)
 
@@ -105,29 +105,29 @@ Sin Supabase — no hay persistencia en este proyecto.
 
 - Crear `.agents/skills/security-audit/SKILL.md`
 - Documentar el system prompt, input/output esperado, y cómo invocarlo
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T11 — Skill: test-coverage
 
 - Crear `.agents/skills/test-coverage/SKILL.md`
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T12 — Skill: conventions
 
 - Crear `.agents/skills/conventions/SKILL.md`
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T13 — PR Review
 
 - Invocar `@.agents/skills/pr-review/SKILL.md`
 - Resolver todos los issues bloqueantes antes de cerrar
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ### T14 — Commit final y cierre
 
 - Conventional commit por fase
 - Actualizar curriculum map (P07 → completo)
-- Status: [ ] pendiente
+- Status: [x] completo
 
 ---
 
@@ -144,3 +144,13 @@ Sin Supabase — no hay persistencia en este proyecto.
 ## Deuda documentada desde P06
 
 - SSE parsing duplicado identificado en P06 — candidato a `lib/mcp-client.ts` si se usa MCP en fases futuras
+
+---
+
+## Cierre
+
+- Fecha: 2026-04-07
+- Estado: COMPLETO
+- PR Review: aprobado con fixes aplicados
+- Issues bloqueantes resueltos: after() para serverless async, Promise.allSettled en orchestrator
+- Deuda documentada: validación de env vars en startup, User-Agent en GitHub client
