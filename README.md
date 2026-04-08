@@ -1,21 +1,22 @@
-# P06 — n8n Ops Center
+# P07 — AI Code Reviewer
 
-Dashboard para monitorear y operar workflows de n8n, con análisis de errores via IA.
+Bot de GitHub que analiza Pull Requests con subagents paralelos y comenta los resultados automáticamente.
 
 ## ¿Qué hace?
 
-- Lista todos los workflows de tu instancia n8n
-- Muestra ejecuciones recientes con estado (exitoso / error / en curso)
-- Detalle de ejecución: duración, nodo que falló, mensaje de error
-- Análisis de errores con IA: explica la causa probable y sugiere el fix
-- Link directo al editor de n8n para ejecutar o editar workflows
+- Escucha eventos de PR via GitHub Webhook
+- Lanza 3 subagents en paralelo, cada uno con un rol específico:
+  - **security-audit** — detecta vulnerabilidades y patrones inseguros
+  - **test-coverage** — evalúa cobertura y casos faltantes
+  - **conventions** — verifica naming, estructura y convenciones del proyecto
+- Consolida los resultados y los postea como comentario en el PR
 
 ## Stack
 
-- Next.js 16 + TypeScript + Tailwind CSS + shadcn/ui
-- Supabase (Auth)
-- MCP server Express (`mcp-server/`) — intermediario entre el dashboard y n8n
-- Anthropic claude-sonnet-4-6 (análisis de errores)
+- Next.js 16 + TypeScript (webhook handler)
+- Codex CLI (orquestación de subagents)
+- MCP GitHub (leer diffs, postear comentarios)
+- Anthropic claude-sonnet-4-6 (modelo de cada subagent)
 
 ## Setup
 
@@ -24,61 +25,53 @@ Dashboard para monitorear y operar workflows de n8n, con análisis de errores vi
 Copiar `.env.local.example` a `.env.local` y completar:
 
 ```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-
-# n8n
-N8N_API_KEY=              # Settings → API → Create API Key en tu instancia n8n
-
-# MCP server (URL donde corre el servidor Express)
-MCP_SERVER_URL=http://localhost:3001
-
-# IA
+# Anthropic
 ANTHROPIC_API_KEY=
+
+# GitHub
+GITHUB_TOKEN=          # Personal access token con permisos de PR read/write
+GITHUB_WEBHOOK_SECRET= # Secret configurado en el webhook de GitHub
 ```
 
 ### 2. Instalar dependencias
 
 ```bash
-# Dashboard
 npm install
-
-# MCP server
-cd mcp-server && npm install
 ```
 
-### 3. Levantar el MCP server
-
-El MCP server es un proceso Express separado que conecta con la API de n8n.
-Debe estar corriendo para que el dashboard funcione.
+### 3. Exponer el webhook en desarrollo
 
 ```bash
-cd mcp-server
-npm run dev     # desarrollo con watch
-# o
-npm run build && npm start   # producción
+# Usar ngrok o similar para exponer localhost
+ngrok http 3000
+# Configurar la URL pública en GitHub → Settings → Webhooks
 ```
 
-Corre en `http://localhost:3001` por defecto.
-
-### 4. Levantar el dashboard
+### 4. Levantar el servidor
 
 ```bash
 npm run dev
 ```
 
-Abre `http://localhost:3000`. Requiere una cuenta en Supabase configurada para auth.
-
 ## Arquitectura
 
 ```
-Browser → Next.js (3000) → MCP Server Express (3001) → n8n API
-                         ↘ Anthropic API (analyze-error)
+GitHub PR event
+  → Webhook (Next.js /api/webhook)
+    → Codex CLI orchestrator
+      → subagent: security-audit  (paralelo)
+      → subagent: test-coverage   (paralelo)
+      → subagent: conventions     (paralelo)
+    → Consolidar resultados
+  → MCP GitHub → comentario en PR
 ```
 
-Los Server Components llaman al MCP server directamente (no via API routes internas)
-para evitar problemas de cookies en fetch interno. Ver `.knowledge/decisions.md`.
+## Skills entregadas
+
+- `security-audit` — análisis de vulnerabilidades en diffs
+- `test-coverage` — evaluación de cobertura por cambio
+- `conventions` — revisión de convenciones del proyecto
+- `pr-review` — actualización del skill existente (ya en toolkit)
 
 ## Desarrollo
 
@@ -90,4 +83,4 @@ npm run lint     # ESLint
 
 ## Currículum
 
-Proyecto 06 del Full Stack AI Developer curriculum. Integración con herramientas externas via MCP + análisis con IA.
+Proyecto 07 del Full Stack AI Developer curriculum. Primer proyecto multi-agente con subagents paralelos y orquestación via Codex CLI.

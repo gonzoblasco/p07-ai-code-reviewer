@@ -2,21 +2,21 @@
 
 ## Proyecto
 
-Docs Chat — chat sobre documentos propios (PDF/MD) con fuentes visibles y score de confianza.
+AI Code Reviewer — bot de GitHub que analiza PRs con subagents paralelos y comenta resultados automáticamente.
 
 ## AI Feature
 
-- text-embedding-3-small (OpenAI) para vectorizar chunks de documentos
-- pgvector en Supabase para similarity search (cosine)
-- Pipeline completo: ingest → chunk → embed → store → retrieve → generate
-- Source attribution: cada respuesta muestra fragmentos exactos y similarity score
-- Anthropic SDK (claude-sonnet-4-6) para generación con contexto RAG
+- 3 subagents especializados en paralelo: security-audit, test-coverage, conventions
+- MCP de GitHub para leer diffs y escribir comentarios en PRs
+- Orquestación via Codex CLI con handoffs explícitos
+- Anthropic SDK (claude-sonnet-4-6) como modelo base de cada subagent
 
 ## Stack nuevo (respecto al scaffold)
 
-- pdf-parse para extracción de texto desde PDFs
-- langchain + @langchain/openai para chunking y embedding pipeline
-- Nueva tabla `documents` y `document_chunks` con columna embedding vector(1536)
+- GitHub Webhooks como trigger de PR events
+- MCP GitHub para lectura de diffs y escritura de comentarios
+- Codex CLI para lanzar y coordinar subagents
+- Sin Supabase — no hay persistencia en este proyecto
 
 ## Model
 
