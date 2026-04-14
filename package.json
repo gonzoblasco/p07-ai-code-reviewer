@@ -44,7 +44,7 @@
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.2"
   },
-  "description": "Bot de GitHub que analiza Pull Requests con subagents paralelos y comenta los resultados automáticamente.",
+  "description": "Automated GitHub Code Reviewer powered by specialized AI agents for parallel security, coverage, and convention analysis.",
   "main": "index.js",
   "directories": {
     "lib": "lib"
