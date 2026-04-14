@@ -52,7 +52,7 @@ Así es como se ve el comentario consolidado que el bot publica en cada Pull Req
 ## 🛠️ Stack Tecnológico
 
 -   **Framework:** [Next.js 16+](https://nextjs.org/) (App Router)
--   **IA:** [Anthropic Claude 3.5 Sonnet](https://www.anthropic.com/claude) & [LangChain](https://www.langchain.com/)
+-   **IA:** [Anthropic Claude 4.6 Sonnet](https://www.anthropic.com/claude) & [LangChain](https://www.langchain.com/)
 -   **Base de Datos/Auth:** [Supabase](https://supabase.com/)
 -   **UI:** [Tailwind CSS 4](https://tailwindcss.com/), [Shadcn UI](https://ui.shadcn.com/)
 -   **Testing:** [Vitest](https://vitest.dev/)
